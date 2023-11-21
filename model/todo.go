@@ -6,11 +6,8 @@ package model
 import (
 	"database/sql"
 	"fmt"
-
-	// "fmt"
-	"log"
-
 	_ "github.com/mattn/go-sqlite3"
+	"log"
 )
 
 var db *sql.DB
@@ -51,7 +48,11 @@ func InitDB() {
 
 // AddTodo saves a todo item into the database.
 func AddTodo(todoToAdd TodoItem) {
-
+	const queryStr = `INSERT INTO TodoList (name, desc, kind, state)
+		VALUES ('%s', '%s', %d, %d);`
+	_, err := db.Exec(fmt.Sprintf(queryStr, todoToAdd.name,
+		todoToAdd.desc, todoToAdd.kind, todoToAdd.state))
+	LogErr(err)
 }
 
 // GetAllTodos returns all todos in the DB as a slice of TodoItems
@@ -64,7 +65,7 @@ func GetAllTodos() []TodoItem {
 	for rows.Next() {
 		var newTodo TodoItem
 		err = rows.Scan(&newTodo.todo_id, &newTodo.name,
-			&newTodo.desc, &newTodo.kind, &newTodo.done)
+			&newTodo.desc, &newTodo.kind, &newTodo.state)
 		LogErr(err)
 		todos = append(todos, newTodo)
 	}
@@ -73,8 +74,18 @@ func GetAllTodos() []TodoItem {
 }
 
 // UpdateTodo will modify a todo of a given ID to match the passed TodoItem
-func UpdateTodo(todo_id uint, newTodoInfo TodoItem) {
+func UpdateTodo(newTodoInfo TodoItem) {
+	const queryStr = `UPDATE TodoList SET
+			name=%s,
+			desc=%s,
+			kind=%d,
+			state=%d
+	WHERE id=%d;`
 
+	_, err := db.Exec(fmt.Sprintf(queryStr, newTodoInfo.name,
+		newTodoInfo.desc, newTodoInfo.kind, newTodoInfo.state,
+		newTodoInfo.todo_id))
+	LogErr(err)
 }
 
 // MarkDone will toggle the state of the todo item with the given ID.

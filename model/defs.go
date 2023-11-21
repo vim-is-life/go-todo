@@ -10,7 +10,7 @@ type TodoItem struct {
 	name    string
 	desc    string
 	kind    TodoKind
-	done    TodoState
+	state   TodoState
 }
 
 // TodoKind represents the todo item categories we'll allow
