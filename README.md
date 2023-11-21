@@ -4,7 +4,7 @@ and [tailwindcss](https://tailwindcss.com/),
 with [sqlite](https://github.com/mattn/go-sqlite3)
 on the backend.
 
-# References
+## References
 Below are some of the resources I used in creating this app:
 - [Code from NerdCademy's webapp in go tutorial](https://github.com/NerdCademyDev/gophat)
   - I kind of followed the structure of his code and used it 
