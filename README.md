@@ -16,3 +16,7 @@ Below are some of the resources I used in creating this app:
 - [Using MVC to Structure Go Web Applications](https://www.calhoun.io/using-mvc-to-structure-go-web-applications/)
   - I used this article as a loose reference for ways to
     implement the MVC architecture in Go.
+- <http://go-database-sql.org/retrieving.html> 
+- <http://go-database-sql.org/modifying.html>
+  - I used this reference to understand a bit more how to
+    work with Go's database/sql package.
