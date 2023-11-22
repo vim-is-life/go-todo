@@ -13,6 +13,11 @@ type TodoItem struct {
 	State  TodoState
 }
 
+// IsDone returns true if the todo item is done
+func (ti TodoItem) IsDone() bool {
+	return ti.State == StateDone
+}
+
 // TodoKind represents the todo item categories we'll allow
 type TodoKind int
 
