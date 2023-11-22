@@ -75,7 +75,7 @@ Below are some of the resources I used in creating this app:
     work with Go's database/sql package.
 - [Which Go router should I use? (with flowchart)](https://www.alexedwards.net/blog/which-go-router-should-i-use)
   - I used this to understand why NerdCademy used 
-    `[gorilla/mux](https://pkg.go.dev/github.com/gorilla/mux)`
+    [`gorilla/mux`](https://pkg.go.dev/github.com/gorilla/mux)
     over the `http.ServeMux` in the standard library, and to
     just learn more about the different available options for
     muxes in Go.
