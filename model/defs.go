@@ -6,11 +6,11 @@ import "fmt"
 // - maybe name is no more than 200 chars
 // TodoItem represents an item in our todo list
 type TodoItem struct {
-	todo_id uint
-	name    string
-	desc    string
-	kind    TodoKind
-	state   TodoState
+	TodoId uint
+	Name   string
+	Desc   string
+	Kind   TodoKind
+	State  TodoState
 }
 
 // TodoKind represents the todo item categories we'll allow
