@@ -14,6 +14,8 @@ func serveTodosToDisplay(w http.ResponseWriter) {
 	todoList := model.GetAllTodos()
 	tmpl := template.Must(template.ParseFiles("views/todos.gohtml"))
 
+	err := tmpl.ExecuteTemplate(w, "Todos", todoList)
+	model.LogErr(err)
 }
 
 // getIdxPage serves a parsed html template containing all the todos
