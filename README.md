@@ -8,6 +8,17 @@ on the backend.
 because I'm not that familiar with CSS and my focus is just a 
 UI that's _good enough_.)
 
+## Roadmap/todos/ideas
+- [x] make sure app works by checking it with NerdCademy's template
+- [ ] design web app layout on paper
+- [ ] implement design with bootstrap
+- [ ] make sure app looks good on desktop
+- [ ] make sure app looks good on mobile
+- [ ] consider dockerizing backend part of app
+- [ ] consider trying to add new api route to allow for mobile or cli apps
+      that connect to backend
+- [ ] see how app plays under a proxy like nginx
+
 ## Deployment
 ### Simple
 This method assumes you already have a compiled binary file on your 
