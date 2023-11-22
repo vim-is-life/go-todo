@@ -21,7 +21,7 @@ A potential workflow could be:
 ``` sh
 # susbtitute $REMOTE_HOST for your ssh host and $APP_DIRECTORY for the folder 
 # you'll have this app run in on the server.
-scp -r ./go-todo ./templates ./run.sh $REMOTE_HOST:$APP_DIRECTORY
+scp -r ./go-todo ./views ./run.sh $REMOTE_HOST:$APP_DIRECTORY
 ```
 
 If you'd like to change the port that the app runs on,
