@@ -20,7 +20,11 @@ func serveTodosToDisplay(w http.ResponseWriter) {
 
 // getIdxPage serves a parsed html template containing all the todos
 func getIdxPage(w http.ResponseWriter, r *http.Request) {
-	log.Println("getIdxPage: not implemented yet!")
+	todoList := model.GetAllTodos()
+	tmpl := template.Must(template.ParseFiles("views/todos.gohtml"))
+
+	err := tmpl.Execute(w, todoList)
+	model.LogErr(err)
 }
 
 // markTodo inverts the completion state of a todoItem.
