@@ -51,6 +51,7 @@ A potential workflow could be the below:
 
 ``` sh
 git clone https://github.com/vim-is-life/go-todo/
+cd go-todo
 CGO_ENABLED=1 go build .
 ```
 
