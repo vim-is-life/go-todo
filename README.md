@@ -10,7 +10,8 @@ UI that's _good enough_.)
 
 ## Roadmap/todos/ideas
 - [x] make sure app works by checking it with NerdCademy's template
-- [ ] design web app layout on paper
+- [x] design web app layout on paper
+- [ ] implement design with basic html no styles in particular
 - [ ] implement design with bootstrap
 - [ ] make sure app looks good on desktop
 - [ ] make sure app looks good on mobile
