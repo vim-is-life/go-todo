@@ -78,6 +78,7 @@
     {{ block "Todos" . }}
       <thead>
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Description</th>
           <th>Kind</th>
@@ -90,9 +91,6 @@
                    {{ else if $todo.IsInProgress }}
                    item-inProgress
                    {{ end }}">
-          <td> {{ $todo.Name }} </td>
-          <td> {{ $todo.Desc }} </td>
-          <td> {{ $todo.Kind }} </td>
           <!-- mark todo button -->
           <td>
             <button hx-put="/markTodo/{{ $todo.TodoId }}"
@@ -101,6 +99,9 @@
               ✅
             </button>
           </td>
+          <td> {{ $todo.Name }} </td>
+          <td> {{ $todo.Desc }} </td>
+          <td> {{ $todo.Kind }} </td>
           <!-- delete todo button -->
           <td>
             <button hx-delete="/delete/{{ $todo.TodoId }}"
