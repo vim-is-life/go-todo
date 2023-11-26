@@ -16,6 +16,8 @@ func serveTodosToDisplay(w http.ResponseWriter) {
 	todoList := model.GetAllTodos()
 	tmpl := template.Must(template.ParseFiles("views/todos.gohtml"))
 
+	// NOTE: since we call ExecuteTemplate, this will only work on the "Todos"
+	// named template in template html file
 	err := tmpl.ExecuteTemplate(w, "Todos", todoList)
 	model.LogErr(err)
 }
@@ -23,12 +25,10 @@ func serveTodosToDisplay(w http.ResponseWriter) {
 // getIdxPage serves a parsed html template containing all the todos
 func getIdxPage(w http.ResponseWriter, r *http.Request) {
 	todoList := model.GetAllTodos()
-	// todoKinds := model.GetAllTodoKinds()
 	tmpl := template.Must(template.ParseFiles("views/todos.gohtml"))
 
-	// err := tmpl.Execute(w, todoList)
-	// err := tmpl.ExecuteTemplate(w, "Options", todoKinds)
-	// model.LogErr(err)
+	// NOTE: since we call execute, this will work on the WHOLE template html
+	// file
 	err := tmpl.Execute(w, todoList)
 	model.LogErr(err)
 }
@@ -76,7 +76,12 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 // deleteTodo removes a todo from the todo list.
 // Information about the todo item to delete will be in r.
 func deleteTodo(w http.ResponseWriter, r *http.Request) {
-	log.Println("deleteTodo: not implemented yet!")
+	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Println("couldn't parse id from url", err)
+	}
+
+	model.DeleteTodo(uint(todo_id))
 	serveTodosToDisplay(w)
 }
 

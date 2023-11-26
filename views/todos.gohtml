@@ -104,7 +104,9 @@
           <td> {{ $todo.Kind }} </td>
           <!-- delete todo button -->
           <td>
-            <button hx-delete="/delete/{{ $todo.TodoId }}"
+            <button class="btn"
+                    hx-confirm="Are you sure you want to delete this item?"
+                    hx-delete="/delete/{{ $todo.TodoId }}"
                     hx-target="#todos"
                     hx-swap="innerHTML">
               🗑
