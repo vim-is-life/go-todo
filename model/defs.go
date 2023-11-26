@@ -18,6 +18,24 @@ func (ti TodoItem) IsDone() bool {
 	return ti.State == StateDone
 }
 
+// IsInProgress returns true if the todo item is currently in progress
+func (ti TodoItem) IsInProgress() bool {
+	return ti.State == StateInProgress
+}
+
+// GetValidKinds returns a slice of all valid kinds of todos
+func (ti TodoItem) GetValidKinds() map[int]string {
+	todoKinds := make(map[int]string)
+	todoKinds[int(KindUncategorized)] = KindUncategorized.String()
+	todoKinds[int(KindProject)] = KindProject.String()
+	todoKinds[int(KindHomework)] = KindHomework.String()
+	todoKinds[int(KindReading)] = KindReading.String()
+	todoKinds[int(KindStudy)] = KindStudy.String()
+	return todoKinds
+}
+
+//end TodoItem
+
 // TodoKind represents the todo item categories we'll allow
 type TodoKind int
 
@@ -45,6 +63,17 @@ func (tk TodoKind) String() string {
 	}
 	// if we're here we somehow didn't fit in the switch
 	return fmt.Sprint(tk, " is not in our list of kinds of todos")
+}
+
+// GetAllTodoKinds returns a map of TodoKinds and their string representations.
+func GetAllTodoKinds() map[int]string {
+	todoKinds := make(map[int]string)
+	todoKinds[int(KindUncategorized)] = KindUncategorized.String()
+	todoKinds[int(KindProject)] = KindProject.String()
+	todoKinds[int(KindHomework)] = KindHomework.String()
+	todoKinds[int(KindReading)] = KindReading.String()
+	todoKinds[int(KindStudy)] = KindStudy.String()
+	return todoKinds
 }
 
 //end TodoKind

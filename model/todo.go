@@ -49,11 +49,17 @@ func InitDB() {
 
 // AddTodo saves a todo item into the database.
 func AddTodo(todoToAdd TodoItem) {
-	const queryStr = `INSERT INTO TodoList (Name, Desc, Kind, State)
-		VALUES ('%s', '%s', %d, %d);`
-	_, err := db.Exec(fmt.Sprintf(queryStr, todoToAdd.Name,
-		todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State))
+	// const queryStr = `INSERT INTO TodoList(Name, Desc, Kind, State)
+	// 	VALUES('%s', '%s', %d, %d);`
+	// _, err := db.Exec(fmt.Sprintf(queryStr, todoToAdd.Name,
+	// 	todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State))
+
+	const queryStr = `INSERT INTO TodoList(Name, Desc, Kind, State)
+		VALUES(?, ?, ?, ?);`
+	stmt, err := db.Prepare(queryStr)
 	LogErr(err)
+	stmt.Exec(todoToAdd.Name, todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State)
+	defer stmt.Close()
 }
 
 // GetAllTodos returns all todos in the DB as a slice of TodoItems
@@ -61,7 +67,7 @@ func GetAllTodos() []TodoItem {
 	err := db.Ping()
 	LogErr(err)
 	todos := []TodoItem{}
-	rows, err := db.Query(`SELECT * FROM TodoList`)
+	rows, err := db.Query(`SELECT * FROM TodoList ORDER BY State`)
 	LogErr(err)
 
 	for rows.Next() {
@@ -83,7 +89,7 @@ func UpdateTodo(newTodoInfo TodoItem) {
 			Desc=%s,
 			Kind=%d,
 			State=%d
-	WHERE id=%d;`
+	WHERE Todo_id=%d;`
 
 	_, err := db.Exec(fmt.Sprintf(queryStr, newTodoInfo.Name,
 		newTodoInfo.Desc, newTodoInfo.Kind, newTodoInfo.State,
@@ -93,27 +99,29 @@ func UpdateTodo(newTodoInfo TodoItem) {
 
 // MarkDone will toggle the state of the todo item with the given ID.
 func MarkDone(todo_id uint) {
-	queryStr := `SELECT State FROM TodoList WHERE id=%d;`
+	queryStr := `SELECT State FROM TodoList WHERE Todo_id=%d;`
 	var currentState int
 	err := db.QueryRow(fmt.Sprintf(queryStr, todo_id)).Scan(&currentState)
 	LogErr(err)
 
 	var newState TodoState
 	switch currentState {
-	case int(StateTodo), int(StateInProgress):
+	case int(StateTodo):
+		newState = StateInProgress
+	case int(StateInProgress):
 		newState = StateDone
 	case int(StateDone):
 		newState = StateTodo
 	}
 
-	queryStr = `UPDATE TodoList SET State=%d WHERE id=%d;`
+	queryStr = `UPDATE TodoList SET State=%d WHERE Todo_id=%d;`
 	_, err = db.Exec(fmt.Sprintf(queryStr, newState, todo_id))
 	LogErr(err)
 }
 
 // DeleteTodo will delete the todo item with the given ID.
 func DeleteTodo(todo_id uint) {
-	const queryStr = `DELETE FROM TodoList WHERE id=%d;`
+	const queryStr = `DELETE FROM TodoList WHERE Todo_id=%d;`
 	_, err := db.Exec(fmt.Sprintf(queryStr, todo_id))
 	LogErr(err)
 }

@@ -1,10 +1,12 @@
 package controller
 
 import (
+	// "fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	model "github.com/vim-is-life/go-todo/model"
@@ -21,8 +23,12 @@ func serveTodosToDisplay(w http.ResponseWriter) {
 // getIdxPage serves a parsed html template containing all the todos
 func getIdxPage(w http.ResponseWriter, r *http.Request) {
 	todoList := model.GetAllTodos()
+	// todoKinds := model.GetAllTodoKinds()
 	tmpl := template.Must(template.ParseFiles("views/todos.gohtml"))
 
+	// err := tmpl.Execute(w, todoList)
+	// err := tmpl.ExecuteTemplate(w, "Options", todoKinds)
+	// model.LogErr(err)
 	err := tmpl.Execute(w, todoList)
 	model.LogErr(err)
 }
@@ -31,7 +37,12 @@ func getIdxPage(w http.ResponseWriter, r *http.Request) {
 // The id of the item we want to change will be in r. After the state has been
 // changed this function will re-serve the index page.
 func markTodo(w http.ResponseWriter, r *http.Request) {
-	log.Println("markTodo: not implemented yet!")
+	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Println("couldn't parse id from url", err)
+	}
+
+	model.MarkDone(uint(todo_id))
 	serveTodosToDisplay(w)
 }
 
@@ -39,7 +50,26 @@ func markTodo(w http.ResponseWriter, r *http.Request) {
 // The information for the new todo will be in r. After the state has been
 // changed this function will re-serve the index page.
 func createTodo(w http.ResponseWriter, r *http.Request) {
-	log.Println("createTodo: not implemented yet!")
+	err := r.ParseForm()
+	model.LogErr(err)
+
+	newKind, err := strconv.Atoi(r.FormValue("newTodoKind"))
+	if err != nil {
+		log.Println(err)
+	}
+	// model.LogErr(err)
+
+	// note that
+	// - we don't need to worry about id because db handles this for us
+	// - we don't need to worry about state because it will default to StateTodo
+	newTodoItem := model.TodoItem{
+		Name: r.FormValue("newTodoName"),
+		Kind: model.TodoKind(newKind),
+		Desc: r.FormValue("newTodoDesc"),
+	}
+
+	// fmt.Printf("%+v\n", newTodoItem)
+	model.AddTodo(newTodoItem)
 	serveTodosToDisplay(w)
 }
 
@@ -56,8 +86,8 @@ func SetupAndRun() {
 	mux := mux.NewRouter()
 
 	mux.HandleFunc("/", getIdxPage)
-	mux.HandleFunc("/todo/{id}", markTodo).Methods("PUT")
-	mux.HandleFunc("/todo/{id}", deleteTodo).Methods("DELETE")
+	mux.HandleFunc("/markTodo/{id}", markTodo).Methods("PUT")
+	mux.HandleFunc("/delete/{id}", deleteTodo).Methods("DELETE")
 	mux.HandleFunc("/createTodo", createTodo).Methods("POST")
 
 	// port must be in form ':abdc' where abcd are numbers
