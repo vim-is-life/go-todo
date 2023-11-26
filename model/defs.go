@@ -83,8 +83,8 @@ func GetAllTodoKinds() map[int]string {
 type TodoState int
 
 const (
-	StateTodo TodoState = iota
-	StateInProgress
+	StateInProgress TodoState = iota - 1
+	StateTodo
 	StateDone
 )
 
