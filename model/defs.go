@@ -62,7 +62,7 @@ func (tk TodoKind) String() string {
 		return "Study"
 	}
 	// if we're here we somehow didn't fit in the switch
-	return fmt.Sprint(tk, " is not in our list of kinds of todos")
+	return fmt.Sprintf("%d is not in our list of kinds of todos", tk)
 }
 
 // GetAllTodoKinds returns a map of TodoKinds and their string representations.
@@ -98,7 +98,7 @@ func (ts TodoState) String() string {
 	case StateDone:
 		return "Done"
 	}
-	return fmt.Sprint(ts, " is not in our list of states of todos")
+	return fmt.Sprintf("%d is not in our list of states of todos", ts)
 }
 
 //end TodoState
