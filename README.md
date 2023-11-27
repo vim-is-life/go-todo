@@ -12,7 +12,7 @@ UI that's _good enough_.)
 - [x] make sure app works by checking it with NerdCademy's template
 - [x] design web app layout on paper
 - [x] implement design with basic html no styles in particular
-~~- [ ] consider dockerizing backend part of app~~
+-~~[ ] consider dockerizing backend part of app~~
 - [ ] consider trying to add new api route to allow for mobile or cli apps
       that connect to backend
 - [ ] see how app plays under a proxy like nginx
