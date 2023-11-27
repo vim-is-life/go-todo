@@ -16,7 +16,6 @@ func getTodosApi(w http.ResponseWriter, r *http.Request) {
 	const numCols = 5
 
 	for _, todoItem := range todoList {
-		// record := make([]string, numCols)
 		record := []string{
 			fmt.Sprintf("%d", todoItem.TodoId),
 			todoItem.Name,
