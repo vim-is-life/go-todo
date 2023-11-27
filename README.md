@@ -11,14 +11,14 @@ UI that's _good enough_.)
 ## Roadmap/todos/ideas
 - [x] make sure app works by checking it with NerdCademy's template
 - [x] design web app layout on paper
-- [ ] implement design with basic html no styles in particular
-- [ ] implement design with bootstrap
-- [ ] make sure app looks good on desktop
-- [ ] make sure app looks good on mobile
-- [ ] consider dockerizing backend part of app
+- [x] implement design with basic html no styles in particular
+~~- [ ] consider dockerizing backend part of app~~
 - [ ] consider trying to add new api route to allow for mobile or cli apps
       that connect to backend
 - [ ] see how app plays under a proxy like nginx
+- [ ] implement design with bootstrap
+- [ ] make sure app looks good on desktop
+- [ ] make sure app looks good on mobile
 
 ## Deployment
 ### Simple
