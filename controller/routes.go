@@ -90,10 +90,17 @@ func deleteTodo(w http.ResponseWriter, r *http.Request) {
 func SetupAndRun() {
 	mux := mux.NewRouter()
 
+	// normal routes
 	mux.HandleFunc("/", getIdxPage)
 	mux.HandleFunc("/markTodo/{id}", markTodo).Methods("PUT")
 	mux.HandleFunc("/delete/{id}", deleteTodo).Methods("DELETE")
 	mux.HandleFunc("/createTodo", createTodo).Methods("POST")
+
+	// api routes for other apps to connect to and get data
+	mux.HandleFunc("/api/getTodosApi", getTodosApi)
+	mux.HandleFunc("/api/markTodoApi/{id}", markTodoApi).Methods("PUT")
+	mux.HandleFunc("/api/deleteApi/{id}", deleteTodoApi).Methods("DELETE")
+	mux.HandleFunc("/api/createTodoApi", createTodoApi).Methods("POST")
 
 	// port must be in form ':abdc' where abcd are numbers
 	appPort := os.Getenv("APP_PORT")
