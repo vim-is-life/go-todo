@@ -24,3 +24,4 @@ go-todo
 *.sqlite
 *.sqlite*
 TAGS
+tags
