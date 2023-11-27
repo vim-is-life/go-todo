@@ -22,4 +22,5 @@ go.work
 
 go-todo
 *.sqlite
+*.sqlite*
 TAGS
