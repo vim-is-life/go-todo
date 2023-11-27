@@ -30,7 +30,7 @@ func InitDB() {
 	const migrationStr = `CREATE TABLE IF NOT EXISTS TodoList (
 		Todo_id     INTEGER  NOT NULL UNIQUE PRIMARY KEY AUTOINCREMENT,
 		Name        TEXT     NOT NULL UNIQUE,
-		Desc        TEXT     NOT NULL UNIQUE,
+		Desc        TEXT     NOT NULL DEFAULT '',
 		Kind        INTEGER  NOT NULL DEFAULT -1,
 		State       INTEGER  NOT NULL DEFAULT 0
 	);`
@@ -38,28 +38,39 @@ func InitDB() {
 	_, err = db.Exec(migrationStr)
 	LogErr(err)
 
-	// queryStr := `INSERT INTO TodoList (Name, Desc, Kind, State)
-	// 	VALUES ('%s', '%s', %d, %d);`
+	rows, err := db.Query(`SELECT * FROM TodoList;`)
+	LogErr(err)
+	isFreshDB := true
+	for rows.Next() {
+		isFreshDB = false
+		break
+	}
+	defer rows.Close()
 
-	// db.Exec(fmt.Sprintf(queryStr, "learn rust", "learn rust to ascend to a higher plane",
-	// 	KindProject, StateTodo))
+	if isFreshDB {
+		queryStr := `INSERT INTO TodoList (Name, Desc, Kind, State) VALUES ('%s', '%s', %d, %d);`
+		db.Exec(fmt.Sprintf(queryStr, "learn rust", "learn rust to ascend to a higher plane",
+			KindProject, StateTodo))
+	}
 	// db.Exec(fmt.Sprintf(queryStr, "learn haskell", "learn hs to ascend to an even higher plane",
 	// 	KindUncategorized, StateTodo))
 }
 
 // AddTodo saves a todo item into the database.
 func AddTodo(todoToAdd TodoItem) {
-	// const queryStr = `INSERT INTO TodoList(Name, Desc, Kind, State)
-	// 	VALUES('%s', '%s', %d, %d);`
-	// _, err := db.Exec(fmt.Sprintf(queryStr, todoToAdd.Name,
-	// 	todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State))
-
 	const queryStr = `INSERT INTO TodoList(Name, Desc, Kind, State)
-		VALUES(?, ?, ?, ?);`
-	stmt, err := db.Prepare(queryStr)
-	LogErr(err)
-	stmt.Exec(todoToAdd.Name, todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State)
-	defer stmt.Close()
+		VALUES('%s', '%s', %d, %d);`
+	_, err := db.Exec(fmt.Sprintf(queryStr, todoToAdd.Name,
+		todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State))
+
+	// const queryStr = `INSERT INTO TodoList(Name, Desc, Kind, State)
+	// 	VALUES(?, ?, ?, ?);`
+	// stmt, err := db.Prepare(queryStr)
+	if err != nil {
+		log.Println(err)
+	}
+	// // stmt.Exec(todoToAdd.Name, todoToAdd.Desc, todoToAdd.Kind, todoToAdd.State)
+	// defer stmt.Close()
 }
 
 // GetAllTodos returns all todos in the DB as a slice of TodoItems
