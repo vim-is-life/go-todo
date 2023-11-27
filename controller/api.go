@@ -1,13 +1,37 @@
 package controller
 
 import (
+	"encoding/csv"
+	"fmt"
 	"log"
 	"net/http"
+
+	model "github.com/vim-is-life/go-todo/model"
 )
 
 // getTodosApi will write a CSV of the todos to w
 func getTodosApi(w http.ResponseWriter, r *http.Request) {
-	log.Println("ERROR: getTodosApi not implemented yet")
+	todoList := model.GetAllTodos()
+	cw := csv.NewWriter(w)
+	const numCols = 5
+
+	for _, todoItem := range todoList {
+		// record := make([]string, numCols)
+		record := []string{
+			fmt.Sprintf("%d", todoItem.TodoId),
+			todoItem.Name,
+			todoItem.Desc,
+			fmt.Sprintf("%d", todoItem.Kind),
+			fmt.Sprintf("%d", todoItem.State),
+		}
+
+		if err := cw.Write(record); err != nil {
+			log.Println("Error writing csv record: ", err)
+			break
+		}
+	}
+
+	cw.Flush()
 }
 
 // markTodoApi will change the state of a todo item from Todo->InProgress->Done.
