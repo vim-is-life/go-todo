@@ -99,7 +99,8 @@ func SetupAndRun() {
 	// api routes for other apps to connect to and get data
 	mux.HandleFunc("/api/getTodos", getTodosApi)
 	mux.HandleFunc("/api/markTodo/{id}", markTodoApi).Methods("PUT")
-	mux.HandleFunc("/api/delete/{id}", deleteTodoApi).Methods("DELETE")
+	mux.HandleFunc("/api/updateTodo/{id}", updateTodoApi).Methods("PUT")
+	mux.HandleFunc("/api/deleteTodo/{id}", deleteTodoApi).Methods("DELETE")
 	mux.HandleFunc("/api/createTodo", createTodoApi).Methods("POST")
 
 	// port must be in form ':abdc' where abcd are numbers
