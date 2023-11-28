@@ -33,6 +33,7 @@ import (
 func getTodosApi(w http.ResponseWriter, r *http.Request) {
 	todoList := model.GetAllTodos()
 	cw := csv.NewWriter(w)
+	cw.Comma = ';'
 	const numCols = 5
 
 	for _, todoItem := range todoList {
