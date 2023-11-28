@@ -33,19 +33,6 @@ func getIdxPage(w http.ResponseWriter, r *http.Request) {
 	model.LogErr(err)
 }
 
-// markTodo inverts the completion state of a todoItem.
-// The id of the item we want to change will be in r. After the state has been
-// changed this function will re-serve the index page.
-func markTodo(w http.ResponseWriter, r *http.Request) {
-	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
-	if err != nil {
-		log.Println("couldn't parse id from url", err)
-	}
-
-	model.MarkDone(uint(todo_id))
-	serveTodosToDisplay(w)
-}
-
 // createTodo will parse information from an html form to add a todo to the DB.
 // The information for the new todo will be in r. After the state has been
 // changed this function will re-serve the index page.
@@ -70,6 +57,19 @@ func createTodo(w http.ResponseWriter, r *http.Request) {
 
 	// fmt.Printf("%+v\n", newTodoItem)
 	model.AddTodo(newTodoItem)
+	serveTodosToDisplay(w)
+}
+
+// markTodo inverts the completion state of a todoItem.
+// The id of the item we want to change will be in r. After the state has been
+// changed this function will re-serve the index page.
+func markTodo(w http.ResponseWriter, r *http.Request) {
+	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Println("couldn't parse id from url", err)
+	}
+
+	model.MarkDone(uint(todo_id))
 	serveTodosToDisplay(w)
 }
 
