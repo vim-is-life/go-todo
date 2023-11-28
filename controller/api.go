@@ -25,7 +25,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	model "github.com/vim-is-life/go-todo/model"
 )
 
@@ -56,15 +58,55 @@ func getTodosApi(w http.ResponseWriter, r *http.Request) {
 
 // createTodoApi will add a todo item to the list from the API.
 func createTodoApi(w http.ResponseWriter, r *http.Request) {
-	log.Println("ERROR: createTodoApi not implemented yet")
+	err := r.ParseForm()
+	model.LogErr(err)
+
+	log.Println(r.FormValue("kind"))
+	newKind, err := strconv.Atoi(r.FormValue("kind"))
+	if err != nil {
+		log.Println(err)
+	}
+
+	// note that
+	// - we don't need to worry about id because db handles this for us
+	// - we don't need to worry about state because it will default to StateTodo
+	newTodoItem := model.TodoItem{
+		Name: r.FormValue("name"),
+		Kind: model.TodoKind(newKind),
+		Desc: r.FormValue("desc"),
+	}
+
+	// fmt.Printf("%+v\n", newTodoItem)
+	model.AddTodo(newTodoItem)
 }
 
 // markTodoApi will change the state of a todo item from Todo->InProgress->Done.
 func markTodoApi(w http.ResponseWriter, r *http.Request) {
-	log.Println("ERROR: markTodoApi not implemented yet")
+	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Println("couldn't parse id from url", err)
+	}
+
+	model.MarkDone(uint(todo_id))
+}
+
+// markTodoApi will change the state of a todo item from Todo->InProgress->Done.
+func updateTodoApi(w http.ResponseWriter, r *http.Request) {
+	log.Println("updateTodoApi not implemented yet")
+	// todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	// if err != nil {
+	// 	log.Println("couldn't parse id from url", err)
+	// }
+
+	// model.MarkDone(uint(todo_id))
 }
 
 // deleteTodoApi will remove a todo item from the list from the API.
 func deleteTodoApi(w http.ResponseWriter, r *http.Request) {
-	log.Println("ERROR: deleteTodoApi not implemented yet")
+	todo_id, err := strconv.Atoi(mux.Vars(r)["id"])
+	if err != nil {
+		log.Println("couldn't parse id from url", err)
+	}
+
+	model.DeleteTodo(uint(todo_id))
 }
