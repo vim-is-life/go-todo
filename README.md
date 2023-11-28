@@ -15,6 +15,7 @@ UI that's _good enough_.)
 -~~[ ] consider dockerizing backend part of app~~
 - [ ] consider trying to add new api route to allow for mobile or cli apps
       that connect to backend
+      - [ ] document this backend better
 - [ ] see how app plays under a proxy like nginx
 - [ ] implement design with bootstrap
 - [ ] make sure app looks good on desktop
